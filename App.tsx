@@ -14,6 +14,7 @@ import Title from './src/components/Title';
 import FieldSearch from './src/components/FieldSearch';
 import Card from './src/components/Card';
 import Message from './src/components/Message';
+import ButtonSaveCEPs from './src/components/ButtonSaveCEPs';
 
 // Types
 import Data from './src/types/Data';
@@ -145,8 +146,9 @@ export default function App() {
   return (
     <Container>
       <StatusBar style="light"/>
+      <ButtonSaveCEPs/>
       {
-        valueCep.length === 8
+        valueCep.length === 9
         ||
         <Title>Digite um CEP</Title>
       }
