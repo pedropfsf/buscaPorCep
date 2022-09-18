@@ -1,4 +1,4 @@
-<h1 align="center">BuscaCep</h1>
+<h1 align="center">BuscaPorCep</h1>
 
 <div align="center">
   <img 
