@@ -95,12 +95,11 @@ export default function App() {
 
   useEffect(() => {
     if (valueCep.length === 8) {
-      // if (!!netInfo.isConnected) {
-      //   fetchData();
-      // } else {
-      //   getDataSavedStore();
-      // }
-      getDataSavedStore();
+      if (!!netInfo.isConnected) {
+        fetchData();
+      } else {
+        getDataSavedStore();
+      }
     }
   }, [valueCep]);
 

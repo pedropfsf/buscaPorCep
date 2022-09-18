@@ -1,7 +1,7 @@
 const colors = {
   dominant: "#010101",
   secondary: "#fafafa",
-  emphasis: "#EE6C4D",
+  emphasis: "#69EBD0",
   danger: "#dc3545",
 }
 
