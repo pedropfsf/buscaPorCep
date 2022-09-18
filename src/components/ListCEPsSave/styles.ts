@@ -15,17 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: (StatusBar.currentHeight ?? 0) + 120,
-    paddingBottom: 24,
+    paddingTop: (StatusBar.currentHeight ?? 0) + 100,
     paddingLeft: 24,
     paddingRight: 24,
   },
   list: {
-    // flex: 1,
     width: widthApp
   },
   areaItem: {
-    // width: widthApp - 24,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
