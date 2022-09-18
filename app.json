@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "buscaPorCep",
+    "name": "Busca Por Cep",
     "slug": "buscaPorCep",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,6 +27,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#010101"
+      },
+      "package": "com.astronauto.buscaPorCep"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "40505e68-5924-433b-a5a0-619faac8b7eb"
       }
     }
   }
