@@ -123,7 +123,7 @@ export default function App() {
       {
         valueCep.length === 8
         ||
-        <Title>Digite o seu CEP</Title>
+        <Title>Digite um CEP</Title>
       }
       <FieldSearch
         value={valueCep}
