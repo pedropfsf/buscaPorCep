@@ -23,6 +23,9 @@ import { cepService } from './src/services/cep.service';
 
 // Utils
 import StorageControl from './src/utils/StorageControl';
+import Mask from './src/utils/Mark';
+
+// Styles
 import colors from './src/styles/colors';
 
 export default function App() {
@@ -35,12 +38,10 @@ export default function App() {
   const netInfo = useNetInfo();
 
   const handleInput = useCallback((value: string) => {
-    if (value.length < 9) {
-      const valueFormatted = value
-        .replace(/( )+/g, "")
-        .replace(/[a-z|A-Z]/, "");
-  
-        setValueCep(valueFormatted);
+    if (value.length < 10) {
+      const valueFormatted = Mask.CEP(value)
+        
+      setValueCep(valueFormatted);
     }
   }, []);
 
@@ -48,6 +49,27 @@ export default function App() {
     try {
       setIsNotCEPSaved(false);
       setLoading(true);
+
+      const listCEPS = await StorageControl.getListCEPS();
+
+      const cepFound = listCEPS.filter(({ cep }) => {
+        if (!cep) {
+          return false;
+        }
+
+        const cepFormatted = cep.replace("-", "");
+
+        return cepFormatted === valueCep;
+      })[0];
+
+      if (!!cepFound) {
+        setData(cepFound);
+        setStatusResponse(200);
+        setLoading(false);
+        Keyboard.dismiss();
+
+        return;
+      }
 
       const response = await cepService.getByCEPJSON(valueCep);
 
@@ -62,6 +84,7 @@ export default function App() {
 
     } finally {
       setLoading(false);
+      Keyboard.dismiss();
     }
   }, [ valueCep ]);
 
@@ -82,6 +105,7 @@ export default function App() {
     if (!cepFound) {
       setIsNotCEPSaved(true);
       setLoading(false);
+      Keyboard.dismiss();
 
       return;
     } else {
@@ -90,11 +114,12 @@ export default function App() {
 
     setData(cepFound);
     setStatusResponse(200);
+    Keyboard.dismiss();
     setLoading(false);
   }, [valueCep]);
 
   useEffect(() => {
-    if (valueCep.length === 8) {
+    if (valueCep.replace(/[^1-9]/, "").length === 8) {
       if (!!netInfo.isConnected) {
         fetchData();
       } else {
@@ -126,7 +151,7 @@ export default function App() {
         <Title>Digite um CEP</Title>
       }
       <FieldSearch
-        value={valueCep}
+        value={Mask.CEP(valueCep)}
         onChange={handleInput}
         loading={loading}
       />
@@ -150,7 +175,7 @@ export default function App() {
       }
 
       {
-        isNotCEPSaved 
+        isNotCEPSaved && !netInfo.isConnected
         &&
         <Message>
           CEP não foi encontrado entre os CEPs salvos no seu aplicativo
@@ -159,5 +184,3 @@ export default function App() {
     </Container>
   );
 }
-
-// && !netInfo.isConnected
