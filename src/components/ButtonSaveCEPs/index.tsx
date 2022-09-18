@@ -74,7 +74,7 @@ export default function ButtonSaveCEPs() {
               />
             </Pressable>
           </View>
-          <ListCEPsSave/>
+          <ListCEPsSave setIsOpenModal={setIsOpenModal}/>
         </View>
       </Modal>
     </>

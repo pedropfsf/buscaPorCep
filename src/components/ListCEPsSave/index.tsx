@@ -24,7 +24,15 @@ import Data from "../../types/Data";
 import styles from "./styles";
 import colors from "../../styles/colors";
 
-export default function ListCEPsSave() {
+// Context
+import { useCEP } from "../../contexts/cepContext";
+
+type ListCEPsSaveProps = {
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ListCEPsSave({ setIsOpenModal }: ListCEPsSaveProps) {
+  const { setValueCep } = useCEP();
   const [ data, setData ] = useState([] as Data[]);
   const [ loading, setLoading ] = useState(false);
 
@@ -42,6 +50,13 @@ export default function ListCEPsSave() {
       setLoading(false);
     }
   }, []);
+
+  function selectCEP(cep: string) {
+    return () => {
+      setValueCep(cep);
+      setIsOpenModal(false);
+    }
+  }
 
   useEffect(() => {
     fetchData();
@@ -67,7 +82,7 @@ export default function ListCEPsSave() {
             <Text style={styles.textItem} key={index}>
               { item.cep }
             </Text>
-            <Pressable>
+            <Pressable onPress={selectCEP(item.cep)}>
               <View style={styles.buttonShowCEP}>
                 <Text style={styles.textButtonShowCEP}>
                   Olhar
