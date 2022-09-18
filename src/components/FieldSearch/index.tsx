@@ -1,11 +1,13 @@
 // Core
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 
 // Components
 import { 
   View, 
   TextInput,
-  Animated 
+  Animated,
+  Keyboard,
+  ActivityIndicator
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -16,6 +18,7 @@ import colors from "../../styles/colors";
 type FieldSearchProps = {
   value?: string;
   onChange?: ((text: string) => void) | undefined;
+  loading?: boolean;
 }
 
 const FontAwesomeAnimated = Animated.createAnimatedComponent(FontAwesome);
@@ -23,28 +26,34 @@ const TextInputAnimated = Animated.createAnimatedComponent(TextInput);
 
 export default function FieldSearch({ 
   value, 
-  onChange, 
+  onChange,
+  loading = false
 }: FieldSearchProps) {
   const colorTheme = useRef(new Animated.Value(0)).current
   const MILISECONDS = 500;
 
-  const handleFocus = useCallback(() => {
-    Animated.timing(colorTheme, {
-      toValue: 1,
-      duration: MILISECONDS,
-      useNativeDriver: false
-    }).start();
+  useEffect(() => {
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      Animated.timing(colorTheme, {
+        toValue: 0,
+        duration: MILISECONDS,
+        useNativeDriver: false
+      }).start();
+    });
 
-  }, [ colorTheme, MILISECONDS ]);
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      Animated.timing(colorTheme, {
+        toValue: 1,
+        duration: MILISECONDS,
+        useNativeDriver: false
+      }).start();
+    });
 
-  const handleBlur = useCallback(() => {
-    Animated.timing(colorTheme, {
-      toValue: 0,
-      duration: MILISECONDS,
-      useNativeDriver: false
-    }).start();
-
-  }, [ colorTheme ]);
+    return () => {
+      hideSubscription.remove();
+      showSubscription.remove();
+    };
+  }, []);
 
   function applyTheme() {
     return colorTheme.interpolate({
@@ -61,23 +70,28 @@ export default function FieldSearch({
       }
     ]}>
       <View>
-        <FontAwesomeAnimated 
-          name="search" 
-          size={32} 
-          color={colors.emphasis}
-        />
+        {
+          loading
+          ?
+          <ActivityIndicator
+            size={32}
+            color={colors.emphasis}
+          />
+          :
+          <FontAwesomeAnimated 
+            name="search" 
+            size={32} 
+            color={colors.emphasis}
+          />
+        }
       </View>
       <TextInputAnimated
         style={[
           styles.input,
-          {
-            color: applyTheme()
-          }
+          {color: applyTheme()}
         ]}
         value={value}
         onChangeText={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
       />
     </Animated.View>
   )

@@ -8,7 +8,10 @@ type TitleProps = {
   children: string;
 }
 
-export default function Title({ children }: TitleProps) {
+export default function Title({ 
+  children,
+}: TitleProps) {
+
   return (
     <Text style={styles.title}>
       { children }

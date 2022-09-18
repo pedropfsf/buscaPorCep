@@ -5,7 +5,7 @@ import { View } from "react-native";
 import styles from "./styles";
 
 type ContainerProps = {
-  children: JSX.Element | JSX.Element[];
+  children: any;
 }
 
 export default function Container({ children }: ContainerProps) {
