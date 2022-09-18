@@ -92,6 +92,7 @@ export default function FieldSearch({
         ]}
         value={value}
         onChangeText={onChange}
+        keyboardType="numeric"
       />
     </Animated.View>
   )

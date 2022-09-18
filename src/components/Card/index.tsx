@@ -24,42 +24,42 @@ export default function Card({ data }: CardProps) {
   return (
     <View style={styles.container}>
       <View style={[styles.row, { marginBottom: 16 }]}>
-        <ItemCard align="left" title="localidade">
+        <ItemCard align="left" title="Localidade">
           { data.localidade }
         </ItemCard>
-        <ItemCard align="right" title="bairro">
+        <ItemCard align="right" title="Bairro">
           { data.bairro }
         </ItemCard>
       </View>
       <View style={[styles.row, { marginBottom: 16 }]}>
-        <ItemCard align="left" title="logradouro">
+        <ItemCard align="left" title="Logradouro">
           { data.logradouro }
         </ItemCard>
-        <ItemCard align="right" title="cep">
+        <ItemCard align="right" title="CEP">
           { data.cep }
         </ItemCard>
       </View>
       <View style={[styles.row, { marginBottom: 16 }]}>
-        <ItemCard align="left" title="uf">
+        <ItemCard align="left" title="UF">
           { data.uf }
         </ItemCard>
-        <ItemCard align="right" title="complemento">
+        <ItemCard align="right" title="Complemento">
           { data.complemento }
         </ItemCard>
       </View>
       <View style={[styles.row, { marginBottom: 16 }]}>
-        <ItemCard align="left" title="ddd">
+        <ItemCard align="left" title="DDD">
           { data.ddd }
         </ItemCard>
-        <ItemCard align="right" title="ibge">
+        <ItemCard align="right" title="IBGE">
           { data.ibge }
         </ItemCard>
       </View>
       <View style={styles.row}>
-        <ItemCard align="left" title="gia">
+        <ItemCard align="left" title="GIA">
           { data.gia }
         </ItemCard>
-        <ItemCard align="right" title="siafi">
+        <ItemCard align="right" title="SIAFI">
           { data.siafi }
         </ItemCard>
       </View>
