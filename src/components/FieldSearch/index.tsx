@@ -1,13 +1,19 @@
 // Core
-import { useRef, useCallback, useEffect } from "react";
+import { 
+  createRef, 
+  useCallback, 
+  useEffect, 
+  useRef,
+  useState
+} from "react";
 
 // Components
 import { 
   View, 
   TextInput,
-  Animated,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -21,32 +27,22 @@ type FieldSearchProps = {
   loading?: boolean;
 }
 
-const FontAwesomeAnimated = Animated.createAnimatedComponent(FontAwesome);
-const TextInputAnimated = Animated.createAnimatedComponent(TextInput);
-
 export default function FieldSearch({ 
   value, 
   onChange,
   loading = false
 }: FieldSearchProps) {
-  const colorTheme = useRef(new Animated.Value(0)).current
+  const input = createRef<TextInput>()
   const MILISECONDS = 500;
+  const [ colorTheme, setColorTheme ] = useState(false);
 
   useEffect(() => {
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      Animated.timing(colorTheme, {
-        toValue: 0,
-        duration: MILISECONDS,
-        useNativeDriver: false
-      }).start();
+      setColorTheme(false);
     });
 
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      Animated.timing(colorTheme, {
-        toValue: 1,
-        duration: MILISECONDS,
-        useNativeDriver: false
-      }).start();
+      setColorTheme(true);
     });
 
     return () => {
@@ -55,45 +51,47 @@ export default function FieldSearch({
     };
   }, []);
 
-  function applyTheme() {
-    return colorTheme.interpolate({
-      inputRange: [ 0, 1 ],
-      outputRange: [ colors.secondary, colors.emphasis ]
-    });
-  }
+  const focusInput = useCallback(() => {
+    if (input.current) {
+      input.current.focus();
+    }
+  }, [input]);
  
   return (
-    <Animated.View style={[
-      styles.container,
-      {
-        borderColor: applyTheme(),
-      }
-    ]}>
-      <View>
+    <Pressable style={{ width: "100%" }} onPress={focusInput}>
+      <View style={[
+        styles.container,
         {
-          loading
-          ?
-          <ActivityIndicator
-            size={32}
-            color={colors.emphasis}
-          />
-          :
-          <FontAwesomeAnimated 
-            name="search" 
-            size={32} 
-            color={colors.emphasis}
-          />
+          borderColor: colorTheme ? colors.emphasis : colors.secondary,
         }
+      ]}>
+        <View>
+          {
+            loading
+            ?
+            <ActivityIndicator
+              size={32}
+              color={colors.emphasis}
+            />
+            :
+            <FontAwesome 
+              name="search" 
+              size={32} 
+              color={colors.emphasis}
+            />
+          }
+        </View>
+        <TextInput
+          ref={input}
+          style={[
+            styles.input,
+            {color: colorTheme ? colors.emphasis : colors.secondary}
+          ]}
+          value={value}
+          onChangeText={onChange}
+          keyboardType="numeric"
+        />
       </View>
-      <TextInputAnimated
-        style={[
-          styles.input,
-          {color: applyTheme()}
-        ]}
-        value={value}
-        onChangeText={onChange}
-        keyboardType="numeric"
-      />
-    </Animated.View>
+    </Pressable>
   )
 }
