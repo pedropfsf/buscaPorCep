@@ -1,5 +1,10 @@
 // Core
-import { useRef, useCallback, useEffect } from "react";
+import { 
+  createRef, 
+  useCallback, 
+  useEffect, 
+  useRef 
+} from "react";
 
 // Components
 import { 
@@ -7,7 +12,8 @@ import {
   TextInput,
   Animated,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -29,7 +35,8 @@ export default function FieldSearch({
   onChange,
   loading = false
 }: FieldSearchProps) {
-  const colorTheme = useRef(new Animated.Value(0)).current
+  const input = createRef<TextInput>()
+  const colorTheme = useRef(new Animated.Value(0)).current;
   const MILISECONDS = 500;
 
   useEffect(() => {
@@ -61,39 +68,48 @@ export default function FieldSearch({
       outputRange: [ colors.secondary, colors.emphasis ]
     });
   }
+
+  const focusInput = useCallback(() => {
+    if (input.current) {
+      input.current.focus();
+    }
+  }, [input]);
  
   return (
-    <Animated.View style={[
-      styles.container,
-      {
-        borderColor: applyTheme(),
-      }
-    ]}>
-      <View>
+    <Pressable style={{ width: "100%" }} onPress={focusInput}>
+      <Animated.View style={[
+        styles.container,
         {
-          loading
-          ?
-          <ActivityIndicator
-            size={32}
-            color={colors.emphasis}
-          />
-          :
-          <FontAwesomeAnimated 
-            name="search" 
-            size={32} 
-            color={colors.emphasis}
-          />
+          borderColor: applyTheme(),
         }
-      </View>
-      <TextInputAnimated
-        style={[
-          styles.input,
-          {color: applyTheme()}
-        ]}
-        value={value}
-        onChangeText={onChange}
-        keyboardType="numeric"
-      />
-    </Animated.View>
+      ]}>
+        <View>
+          {
+            loading
+            ?
+            <ActivityIndicator
+              size={32}
+              color={colors.emphasis}
+            />
+            :
+            <FontAwesomeAnimated 
+              name="search" 
+              size={32} 
+              color={colors.emphasis}
+            />
+          }
+        </View>
+        <TextInputAnimated
+          ref={input}
+          style={[
+            styles.input,
+            {color: applyTheme()}
+          ]}
+          value={value}
+          onChangeText={onChange}
+          keyboardType="numeric"
+        />
+      </Animated.View>
+    </Pressable>
   )
 }

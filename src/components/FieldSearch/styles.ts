@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import colors from "../../styles/colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,6 +14,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     paddingLeft: 16,
+    fontSize: 20
   },
 });
 
