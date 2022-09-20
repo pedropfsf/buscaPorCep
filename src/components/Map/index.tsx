@@ -21,10 +21,6 @@ type RegionProps = {
   longitudeDelta: number;
 }
 
-type MapProps = {
-  visible: boolean;
-}
-
 const initialRegion = {
   latitude: 37.78825,
   longitude: -122.4324,
@@ -43,8 +39,8 @@ export default function Map() {
 
   useEffect(() => {
     setRegion({
-      latitude: Number(data?.latitude ?? 37.78825),
-      longitude: Number(data?.longitude ?? -122.4324),
+      latitude: data?.latitude ? Number(data?.latitude) : 37.78825,
+      longitude: data?.longitude ? Number(data?.longitude) : -122.4324,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
@@ -68,14 +64,14 @@ export default function Map() {
         animationType="fade"
       >
         <MapView 
-          style={{ flex: 1, zIndex: -1 }}
+          style={{ flex: 1 }}
           initialRegion={region}
           onRegionChange={region => setRegion(region)}
         >
           <Marker
             coordinate={{
-              latitude: Number(data?.latitude ?? 37.78825),
-              longitude: Number(data?.longitude ?? -122.4324),
+              latitude: data?.latitude ? Number(data?.latitude) : 37.78825,
+              longitude: data?.longitude ? Number(data?.longitude) : -122.4324,
             }}
             title={data.cep}
             description={`${data.uf?.toUpperCase()} ${data.localidade} ${data.bairro} ${data.complemento}`}
