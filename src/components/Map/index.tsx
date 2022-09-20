@@ -81,9 +81,11 @@ export default function Map() {
             description={`${data.uf?.toUpperCase()} ${data.localidade} ${data.bairro} ${data.complemento}`}
           />
         </MapView>
-        <Pressable onPress={closeMap}>
+        <Pressable 
+          style={styles.buttonClose} 
+          onPress={closeMap}
+        >
           <AntDesign
-            style={styles.buttonClose} 
             name="closecircle" 
             size={40} 
             color={colors.danger} 

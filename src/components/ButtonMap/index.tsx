@@ -16,9 +16,13 @@ type ButtonMapProps = {
   onPress: () => void;
 }
 
+const MILISECONDS = 400;
+let timerShowMap: NodeJS.Timeout
+
 export default function ButtonMap({ onPress }: ButtonMapProps) {
   const { data } = useCEP();
   const [ isDisabled, setIsDisabled ] = useState(true);
+  const [ colorButtonShow, setColorButtonShow ] = useState(colors.secondary);
 
   useEffect(() => {
     if ("latitude" in data && "longitude" in data) {
@@ -29,11 +33,22 @@ export default function ButtonMap({ onPress }: ButtonMapProps) {
   }, [JSON.stringify(data)]);
 
   const handlePress = useCallback(() => {
+    pressInteraction();
+
     if (!isDisabled) {
       onPress();
     }
 
   }, [isDisabled, onPress]);
+
+  const pressInteraction = useCallback(() => {
+    setColorButtonShow(`${colors.secondary}90`);
+    clearTimeout(timerShowMap);
+    timerShowMap = setTimeout(() => {
+      setColorButtonShow(colors.secondary);
+    }, MILISECONDS);
+
+  }, [MILISECONDS]);
 
   return (
     <Pressable onPress={handlePress}>
@@ -41,7 +56,7 @@ export default function ButtonMap({ onPress }: ButtonMapProps) {
         <Entypo 
           name="map" 
           size={40} 
-          color={isDisabled ? `${colors.secondary}90` : colors.secondary}
+          color={isDisabled ? `${colors.secondary}90` : colorButtonShow}
         />
       </View>
     </Pressable>

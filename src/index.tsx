@@ -89,8 +89,8 @@ export default function Core() {
 
       setData({
         ...responseCep.data,
-        latitude: responseLatLot.data[0].lat,
-        longitude: responseLatLot.data[0].lon,
+        latitude: responseLatLot?.data[0]?.lat,
+        longitude: responseLatLot?.data[0]?.lon,
       });
       setStatusResponse(responseCep.status);
 

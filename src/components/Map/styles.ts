@@ -4,8 +4,8 @@ import { StyleSheet, StatusBar } from "react-native";
 const styles = StyleSheet.create({
   buttonClose: {
     position: "absolute",
-    top: (StatusBar.currentHeight ?? 0) + 24,
-    right: 24,
+    top: 24,
+    left: 24,
     zIndex: 1000
   }
 });
