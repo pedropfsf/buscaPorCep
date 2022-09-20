@@ -14,13 +14,14 @@ import Title from './components/Title';
 import FieldSearch from './components/FieldSearch';
 import Card from './components/Card';
 import Message from './components/Message';
-import ButtonSaveCEPs from './components/ButtonSaveCEPs';
+import Header from './components/Header';
 
 // Types
 import Data from './types/Data';
 
 // Services
-import { cepService } from './services/cep.service';
+import { cepService } from './services/cep/cep.service';
+import { mapService } from './services/map/map.service';
 
 // Utils
 import StorageControl from './utils/StorageControl';
@@ -33,9 +34,13 @@ import colors from './styles/colors';
 import { useCEP } from './contexts/cepContext';
 
 export default function Core() {
-  const { valueCep, setValueCep }  = useCEP();
+  const { 
+    valueCep, 
+    setValueCep, 
+    data, 
+    setData 
+  }  = useCEP();
   const [ loading, setLoading ] = useState(false);
-  const [ data, setData ] = useState({} as Data | { erro: string });
   const [ statusResponse, setStatusResponse ] = useState(0);
   const [ hiddenCard, setHiddenCard ] = useState(false);
   const [ isNotCEPSaved, setIsNotCEPSaved ] = useState(false);
@@ -75,14 +80,20 @@ export default function Core() {
         return;
       }
 
-      const response = await cepService.getByCEPJSON(valueCep);
+      const responseCep = await cepService.getByCEPJSON(valueCep);
+      const responseLatLot = await mapService.getByLatLon(valueCep);
 
-      if (response.status === 200) {
-        StorageControl.set(response.data);
+      if (responseCep.status === 200) {
+        StorageControl.set(responseCep.data);
       }
 
-      setData(response.data);
-      setStatusResponse(response.status);
+      setData({
+        ...responseCep.data,
+        latitude: responseLatLot.data[0].lat,
+        longitude: responseLatLot.data[0].lon,
+      });
+      setStatusResponse(responseCep.status);
+
     } catch (error) {
       console.log(error);
 
@@ -147,7 +158,7 @@ export default function Core() {
   return (
     <Container>
       <StatusBar style="light"/>
-      <ButtonSaveCEPs/>
+      <Header/>
       {
         valueCep.length === 9
         ||

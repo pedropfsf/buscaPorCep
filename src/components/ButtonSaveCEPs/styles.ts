@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 8,
-    position: "absolute",
-    top: (StatusBar.currentHeight ?? 0) + 24,
-    right: 24,
+    // position: "absolute",
+    // top: (StatusBar.currentHeight ?? 0) + 24,
+    // right: 24,
   },
   buttonHiddenModal: {
     justifyContent: "center",

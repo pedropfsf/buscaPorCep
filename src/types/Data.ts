@@ -9,6 +9,8 @@ type Data = {
   logradouro: string;
   siafi: string;
   uf: string;
+  latitude?: string;
+  longitude?: string;
 };
 
 export default Data;
