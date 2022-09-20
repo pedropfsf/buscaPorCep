@@ -101,9 +101,7 @@ export default function Core() {
         return false;
       }
 
-      const cepFormatted = cep.replace("-", "");
-
-      return cepFormatted === valueCep;
+      return cep === valueCep;
     })[0];
 
     if (!cepFound) {
