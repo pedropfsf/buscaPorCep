@@ -1,5 +1,6 @@
 // Core
 import { useState, useEffect, useCallback } from 'react';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 // Components
 import { View, Pressable } from 'react-native';
@@ -23,10 +24,11 @@ export default function ButtonMap({ onPress }: ButtonMapProps) {
   const { data } = useCEP();
   const [ isDisabled, setIsDisabled ] = useState(true);
   const [ colorButtonShow, setColorButtonShow ] = useState(colors.secondary);
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if ("latitude" in data && "longitude" in data) {
-      if (!!data.latitude && !!data.longitude) {
+      if (!!data.latitude && !!data.longitude && netInfo.isConnected) {
         setIsDisabled(false);
       }
     }

@@ -16,8 +16,6 @@ import Card from './components/Card';
 import Message from './components/Message';
 import Header from './components/Header';
 
-// Types
-import Data from './types/Data';
 
 // Services
 import { cepService } from './services/cep/cep.service';
@@ -84,7 +82,11 @@ export default function Core() {
       const responseLatLot = await mapService.getByLatLon(valueCep);
 
       if (responseCep.status === 200) {
-        StorageControl.set(responseCep.data);
+        StorageControl.set({
+          ...responseCep.data,
+          latitude: responseLatLot?.data[0]?.lat,
+          longitude: responseLatLot?.data[0]?.lon,
+        });
       }
 
       setData({
