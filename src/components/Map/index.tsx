@@ -12,6 +12,7 @@ import { useCEP } from "../../contexts/cepContext";
 
 // Styles
 import styles from "./styles";
+import colors from "../../styles/colors";
 
 type RegionProps = {
   latitude: number;
@@ -25,19 +26,19 @@ type MapProps = {
 }
 
 const initialRegion = {
-  latitude: 0,
-  longitude: 0,
+  latitude: 37.78825,
+  longitude: -122.4324,
   latitudeDelta: 0.0922,
   longitudeDelta: 0.0421,
 };
 
 export default function Map() {
-  const [ region, setRegion ] = useState({} as RegionProps);
+  const [ region, setRegion ] = useState(initialRegion as RegionProps);
   const [ visible, setVisible ] = useState(false);
   const { data } = useCEP();
 
   if ("erro" in data) {
-    return <View></View>
+    return <View style={{ position: "absolute" }}></View>
   }
 
   useEffect(() => {
@@ -60,14 +61,6 @@ export default function Map() {
   return (
     <>
       <ButtonMap onPress={openMap}/>
-      <Pressable onPress={closeMap}>
-        <AntDesign
-          style={styles.buttonClose} 
-          name="closecircle" 
-          size={40} 
-          color="black" 
-        />
-      </Pressable>
       <Modal 
         style={{ flex: 1 }} 
         transparent={true} 
@@ -75,9 +68,8 @@ export default function Map() {
         animationType="fade"
       >
         <MapView 
-          style={{ flex: 1 }}
-          initialRegion={initialRegion}
-          region={region}
+          style={{ flex: 1, zIndex: -1 }}
+          initialRegion={region}
           onRegionChange={region => setRegion(region)}
         >
           <Marker
@@ -86,9 +78,17 @@ export default function Map() {
               longitude: Number(data?.longitude ?? -122.4324),
             }}
             title={data.cep}
-            description={`${data.uf?.toUpperCase()} ${data.localidade} ${data.bairro} ${data.bairro} ${data.complemento}`}
+            description={`${data.uf?.toUpperCase()} ${data.localidade} ${data.bairro} ${data.complemento}`}
           />
         </MapView>
+        <Pressable onPress={closeMap}>
+          <AntDesign
+            style={styles.buttonClose} 
+            name="closecircle" 
+            size={40} 
+            color={colors.danger} 
+          />
+        </Pressable>
       </Modal>
     </>
   )

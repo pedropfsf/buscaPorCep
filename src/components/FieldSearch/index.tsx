@@ -3,14 +3,14 @@ import {
   createRef, 
   useCallback, 
   useEffect, 
-  useRef 
+  useRef,
+  useState
 } from "react";
 
 // Components
 import { 
   View, 
   TextInput,
-  Animated,
   Keyboard,
   ActivityIndicator,
   Pressable,
@@ -27,33 +27,22 @@ type FieldSearchProps = {
   loading?: boolean;
 }
 
-const FontAwesomeAnimated = Animated.createAnimatedComponent(FontAwesome);
-const TextInputAnimated = Animated.createAnimatedComponent(TextInput);
-
 export default function FieldSearch({ 
   value, 
   onChange,
   loading = false
 }: FieldSearchProps) {
   const input = createRef<TextInput>()
-  const colorTheme = useRef(new Animated.Value(0)).current;
   const MILISECONDS = 500;
+  const [ colorTheme, setColorTheme ] = useState(false);
 
   useEffect(() => {
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      Animated.timing(colorTheme, {
-        toValue: 0,
-        duration: MILISECONDS,
-        useNativeDriver: false
-      }).start();
+      setColorTheme(false);
     });
 
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      Animated.timing(colorTheme, {
-        toValue: 1,
-        duration: MILISECONDS,
-        useNativeDriver: false
-      }).start();
+      setColorTheme(true);
     });
 
     return () => {
@@ -61,13 +50,6 @@ export default function FieldSearch({
       showSubscription.remove();
     };
   }, []);
-
-  function applyTheme() {
-    return colorTheme.interpolate({
-      inputRange: [ 0, 1 ],
-      outputRange: [ colors.secondary, colors.emphasis ]
-    });
-  }
 
   const focusInput = useCallback(() => {
     if (input.current) {
@@ -77,10 +59,10 @@ export default function FieldSearch({
  
   return (
     <Pressable style={{ width: "100%" }} onPress={focusInput}>
-      <Animated.View style={[
+      <View style={[
         styles.container,
         {
-          borderColor: applyTheme(),
+          borderColor: colorTheme ? colors.emphasis : colors.secondary,
         }
       ]}>
         <View>
@@ -92,24 +74,24 @@ export default function FieldSearch({
               color={colors.emphasis}
             />
             :
-            <FontAwesomeAnimated 
+            <FontAwesome 
               name="search" 
               size={32} 
               color={colors.emphasis}
             />
           }
         </View>
-        <TextInputAnimated
+        <TextInput
           ref={input}
           style={[
             styles.input,
-            {color: applyTheme()}
+            {color: colorTheme ? colors.emphasis : colors.secondary}
           ]}
           value={value}
           onChangeText={onChange}
           keyboardType="numeric"
         />
-      </Animated.View>
+      </View>
     </Pressable>
   )
 }
