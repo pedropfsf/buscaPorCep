@@ -25,9 +25,6 @@ import { mapService } from './services/map/map.service';
 import StorageControl from './utils/StorageControl';
 import Mask from './utils/Mark';
 
-// Styles
-import colors from './styles/colors';
-
 // Context
 import { useCEP } from './contexts/cepContext';
 
@@ -41,7 +38,7 @@ export default function Core() {
   const [ loading, setLoading ] = useState(false);
   const [ statusResponse, setStatusResponse ] = useState(0);
   const [ hiddenCard, setHiddenCard ] = useState(false);
-  const [ isNotCEPSaved, setIsNotCEPSaved ] = useState(false);
+  const [ message, setMessage ] = useState("");
   const netInfo = useNetInfo();
 
   const handleInput = useCallback((value: string) => {
@@ -54,7 +51,6 @@ export default function Core() {
 
   const fetchData = useCallback(async () => {
     try {
-      setIsNotCEPSaved(false);
       setLoading(true);
 
       const listCEPS = await StorageControl.getListCEPS();
@@ -81,20 +77,35 @@ export default function Core() {
       const responseCep = await cepService.getByCEPJSON(valueCep);
       const responseLatLot = await mapService.getByLatLon(valueCep);
 
+      if (responseCep.status === 500) {
+        setMessage("Por causa de problemas no servidor infelizmente não foi possível buscar os dados do CEP :( \n\n\n Tente novamente mais tarde");
+        setLoading(false);
+        Keyboard.dismiss();
+      }
+
       if (responseCep.status === 200) {
         StorageControl.set({
-          ...responseCep.data,
+          ...responseCep?.data,
           latitude: responseLatLot?.data[0]?.lat,
           longitude: responseLatLot?.data[0]?.lon,
         });
       }
 
+      if ("erro" in responseCep.data) {
+        setMessage("Não foi encontrado :(");
+        setLoading(false);
+        Keyboard.dismiss();
+
+        return;
+      }
+
       setData({
-        ...responseCep.data,
+        ...responseCep?.data,
         latitude: responseLatLot?.data[0]?.lat,
         longitude: responseLatLot?.data[0]?.lon,
       });
       setStatusResponse(responseCep.status);
+      setMessage("");
 
     } catch (error) {
       console.log(error);
@@ -118,20 +129,27 @@ export default function Core() {
     })[0];
 
     if (!cepFound) {
-      setIsNotCEPSaved(true);
+      setMessage("CEP não foi encontrado entre os CEPs salvos no seu aplicativo");
       setLoading(false);
       Keyboard.dismiss();
 
       return;
-    } else {
-      setIsNotCEPSaved(false);
+    }
+
+    if (!netInfo.isConnected) {
+      setMessage("Precisa estar conectado a internet para fazer novas buscas");
+      setLoading(false);
+      Keyboard.dismiss();
+
+      return;
     }
 
     setData(cepFound);
     setStatusResponse(200);
     Keyboard.dismiss();
+    setMessage("");
     setLoading(false);
-  }, [valueCep]);
+  }, [valueCep, netInfo]);
 
   useEffect(() => {
     if (valueCep.replace(/[^1-9]/, "").length === 8) {
@@ -173,7 +191,7 @@ export default function Core() {
       />
       
       {
-        statusResponse === 200 && !hiddenCard && !isNotCEPSaved
+        statusResponse === 200 && !hiddenCard && !message
         &&
         <Card
           data={data}
@@ -181,20 +199,10 @@ export default function Core() {
       }
 
       {
-        statusResponse >= 500
-        &&
-        <Message color={colors.danger}>
-          Por causa de problemas no servidor infelizmente não foi possível buscar os dados do CEP :( {"\n\n\n"}
-
-          Tente novamente mais tarde
-        </Message>
-      }
-
-      {
-        isNotCEPSaved && !netInfo.isConnected
+        !!message
         &&
         <Message>
-          CEP não foi encontrado entre os CEPs salvos no seu aplicativo
+          { message }
         </Message>
       }
     </Container>
