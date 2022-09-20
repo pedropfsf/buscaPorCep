@@ -19,12 +19,14 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.5",
+    "react-native-maps": "0.31.1",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.69.1",
+    "@types/react-native-maps": "^0.24.2",
     "typescript": "~4.3.5"
   },
   "private": true

@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
   },
   textItem: {
     color: colors.secondary,
-    fontSize: 24
+    fontSize: 24,
+    marginRight: 8,
   },
   buttonShowCEP: {
     paddingTop: 16,
@@ -48,6 +49,11 @@ const styles = StyleSheet.create({
     color: colors.dominant,
     fontWeight: "bold",
     fontSize: 16
+  },
+  infoItem: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   }
 });
 

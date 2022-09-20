@@ -19,7 +19,7 @@ import colors from "../../styles/colors";
 
 let timerShowModal: NodeJS.Timeout;
 let timerHiddenModal: NodeJS.Timeout;
-const MILISECONDS = 200;
+const MILISECONDS = 400;
 
 export default function ButtonSaveCEPs() {
   const [ colorButtonShow, setColorButtonShow ] = useState(colors.secondary);

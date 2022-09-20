@@ -1,7 +1,12 @@
 // Core
 import { useContext, createContext, useState } from "react";
 
+// Types
+import Data from "../types/Data";
+
 type CepContextProps = {
+  data: Data | { erro: string },
+  setData: React.Dispatch<React.SetStateAction<Data | { erro: string }>>;
   valueCep: string;
   setValueCep: React.Dispatch<React.SetStateAction<string>>,
 }
@@ -14,10 +19,13 @@ type CepProviderProps = {
 
 export function CepProvider({ children }: CepProviderProps) {
   const [ valueCep, setValueCep ] = useState("");
+  const [ data, setData ] = useState({} as Data | { erro: string });
 
   return (
     <CepContext.Provider 
       value={{
+        data,
+        setData,
         valueCep,
         setValueCep
       }}
