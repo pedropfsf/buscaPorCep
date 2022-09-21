@@ -21,19 +21,24 @@
 <br/>
 <div align="center">
   <img
-       src="https://github.com/AstronautoLunar/buscaPorCep/blob/develop/presentation/buscaPorCep-1.jpg"
+       src="https://github.com/AstronautoLunar/buscaPorCep/blob/master/presentation/screenshot1.jpg"
        alt="Part 1"
-       width="22.5%"
+       width="200px"
    />
   <img
-       src="https://github.com/AstronautoLunar/buscaPorCep/blob/develop/presentation/buscaPorCep-2.jpg"
+       src="https://github.com/AstronautoLunar/buscaPorCep/blob/master/presentation/screenshot2.jpg"
        alt="Part 2"
-       width="22.5%"
+       width="200px"
    />
   <img
-       src="https://github.com/AstronautoLunar/buscaPorCep/blob/develop/presentation/buscaPorCep-3.jpg"
+       src="https://github.com/AstronautoLunar/buscaPorCep/blob/master/presentation/screenshot3.jpg"
        alt="Part 3"
-       width="22.5%"
+       width="200px"
+   />
+   <img
+       src="https://github.com/AstronautoLunar/buscaPorCep/blob/master/presentation/screenshot4.jpg"
+       alt="Part 4"
+       width="200px"
    />
 </div>
 
