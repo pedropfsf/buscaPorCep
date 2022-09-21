@@ -80,31 +80,22 @@ export default function ListCEPsSave({ setIsOpenModal }: ListCEPsSaveProps) {
         style={styles.list}
         data={data.filter(item => !!item.cep)}
         keyExtractor={(_item, index) => String(index)}
-        renderItem={({ item, index }) => {
-          console.log(item);
-
-          return (
-            <View style={styles.areaItem}>
-              <View style={styles.infoItem}>
-                <Text style={styles.textItem} key={index}>
-                  { item.cep }
-                </Text>
-                <Entypo 
-                  name="map" 
-                  size={20} 
-                  color={!item?.latitude && !item?.longitude ? `${colors.secondary}90` : colors.secondary}
-                />
-              </View>
-              <Pressable onPress={selectCEP(item.cep)}>
-                <View style={styles.buttonShowCEP}>
-                  <Text style={styles.textButtonShowCEP}>
-                    Olhar
-                  </Text>
-                </View>
-              </Pressable>
+        renderItem={({ item, index }) => (
+          <View style={styles.areaItem}>
+            <View style={styles.infoItem}>
+              <Text style={styles.textItem} key={index}>
+                { item.cep }
+              </Text>
             </View>
-          )
-        }}
+            <Pressable onPress={selectCEP(item.cep)}>
+              <View style={styles.buttonShowCEP}>
+                <Text style={styles.textButtonShowCEP}>
+                  Olhar
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+        )}
       />
     </View>
   )

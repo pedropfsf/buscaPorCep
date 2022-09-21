@@ -19,7 +19,6 @@ import Header from './components/Header';
 
 // Services
 import { cepService } from './services/cep/cep.service';
-import { mapService } from './services/map/map.service';
 
 // Utils
 import StorageControl from './utils/StorageControl';
@@ -75,7 +74,6 @@ export default function Core() {
       }
 
       const responseCep = await cepService.getByCEPJSON(valueCep);
-      const responseLatLot = await mapService.getByLatLon(valueCep);
 
       if (responseCep.status === 500) {
         setMessage("Por causa de problemas no servidor infelizmente não foi possível buscar os dados do CEP :( \n\n\n Tente novamente mais tarde");
@@ -84,11 +82,7 @@ export default function Core() {
       }
 
       if (responseCep.status === 200) {
-        StorageControl.set({
-          ...responseCep?.data,
-          latitude: responseLatLot?.data[0]?.lat,
-          longitude: responseLatLot?.data[0]?.lon,
-        });
+        StorageControl.set(responseCep?.data);
       }
 
       if ("erro" in responseCep.data) {
@@ -99,16 +93,12 @@ export default function Core() {
         return;
       }
 
-      setData({
-        ...responseCep?.data,
-        latitude: responseLatLot?.data[0]?.lat,
-        longitude: responseLatLot?.data[0]?.lon,
-      });
+      setData(responseCep?.data);
       setStatusResponse(responseCep.status);
       setMessage("");
 
     } catch (error) {
-      console.log(error);
+      setMessage("Falha ao buscar os dados do CEP");
 
     } finally {
       setLoading(false);
