@@ -126,14 +126,6 @@ export default function Core() {
       return;
     }
 
-    if (!netInfo.isConnected) {
-      setMessage("Precisa estar conectado a internet para fazer novas buscas");
-      setLoading(false);
-      Keyboard.dismiss();
-
-      return;
-    }
-
     setData(cepFound);
     setStatusResponse(200);
     Keyboard.dismiss();
