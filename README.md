@@ -15,6 +15,11 @@
  ✔️ Concluído ✔️
 </h4>
 
+## Sobre
+Objetivo desse app é fazer busca de dados sobre CEP e salvar para poder acessar sem precisar de internet, aproveitei a API gratuita do <a href="https://viacep.com.br/">ViaCEP</a> para
+trazer esses dados para o usuário e deixar eles formatados para visualização, com uma interface simples e direta sem enrolações, tudo isso para testar
+os meus conhecimentos de API rest no Front-end Mobile
+
 ## Apresentação
 
 <br/>
