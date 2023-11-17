@@ -2,7 +2,7 @@
 
 <div align="center">
   <img 
-       src="https://github.com/AstronautoLunar/buscaPorCep/blob/develop/Icon%20BuscaCEP.png" 
+       src="https://github.com/pedropfsf/buscaPorCep/blob/develop/Icon%20BuscaCEP.png" 
        alt="Icon app"
        width="120px"
        height="120px"
