@@ -39,11 +39,6 @@ trazer esses dados para o usuário e deixar eles formatados para visualização,
        alt="Part 3"
        width="200px"
    />
-   <img
-       src="https://github.com/AstronautoLunar/buscaPorCep/blob/master/presentation/screenshot4.jpg"
-       alt="Part 4"
-       width="200px"
-   />
 </div>
 
 <br/>
